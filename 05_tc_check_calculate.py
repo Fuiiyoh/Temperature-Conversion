@@ -1,10 +1,11 @@
 from tkinter import *
 
+
 class Converter:
 
   def __init__(self):
 
-    # Initialise varibles (such as the feedback variable)
+    # Initialise variables (such as the feedback variable)
     self.var_feedback = StringVar()
     self.var_feedback.set("")
 
@@ -40,11 +41,11 @@ class Converter:
     self.temp_entry.grid(row=2, padx=10, pady=10)
 
     error = "please enter a number"
-    self.temp_error = Label(self.temp_frame, text="",
+    self.output_label = Label(self.temp_frame, text="",
                            fg='#9C0000')
-    self.temp_error.grid(row=3)
+    self.output_label.grid(row=3)
 
-    # converstion, help and history / export buttons
+    # conversion, help and history / export buttons
     self.button_frame = Frame(self.temp_frame)
     self.button_frame.grid(row=4)
 
@@ -60,7 +61,8 @@ class Converter:
                                        text='To Fahrenheit',
                                        bg='#009900',
                                        fg=button_fg,
-                                       font=button_font, width=12)
+                                       font=button_font, width=12,
+                                       command=self.to_fahrenheit)
     self.to_fahrenheit_button.grid(row=0, column=1, padx=5, pady=5)
 
     self.to_help_button = Button(self.button_frame,
@@ -93,6 +95,8 @@ class Converter:
 
       if response < min_value:
         has_error = "yes"
+      else:
+        pass
 
     except ValueError:
       has_error = "yes"
@@ -104,7 +108,7 @@ class Converter:
       self.var_feedback.set(error)
       return "invalid" 
     
-    # if we have no errors
+    # if we have no errors...
     else:
       # set to 'no' in case of previous errors
       self.var_has_error.set("no")
@@ -121,9 +125,18 @@ class Converter:
     if to_convert != "invalid":
       # do calculation
       self.var_feedback.set("Converting {} "
-                            "to C".format(to_convert))
+                            "to C :)".format(to_convert))
       
-      self.output_answer()
+    self.output_answer()
+
+  def to_fahrenheit(self):
+    to_convert = self.check_temp(-273)
+    
+    if to_convert != "invalid":
+      # do calculation
+      self.var_feedback.set("Converting {} "
+                            "to F :)".format(to_convert))
+    self.output_answer()
 
   # Show user output and clears entry widget
   # ready for next calculation
@@ -133,14 +146,14 @@ class Converter:
 
     if has_errors == "yes":
       # red text, pink entry box
-      self.temp_error.config(fg="#9C0000")
+      self.output_label.config(fg="#9C0000")
       self.temp_entry.config(bg="#F8CECC")
 
     else:
-      self.temp_error.config(fg="#004C00")
+      self.output_label.config(fg="#004C00")
       self.temp_entry.config(bg="#FFFFFF")
 
-    self.temp_error.config(text=output)
+    self.output_label.config(text=output)
 
 # main routine
 if __name__ == "__main__":
